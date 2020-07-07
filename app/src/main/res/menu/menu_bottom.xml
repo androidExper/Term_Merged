@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="홈"
+        android:id="@+id/tabhome"
+        android:enabled="true"
+        android:icon="@drawable/home24px" />
+
+    <item
+        android:title="검색"
+        android:id="@+id/tabsearch"
+        android:enabled="true"
+        android:icon="@drawable/search24px" />
+
+    <item
+        android:title="분석"
+        android:id="@+id/tabanlaysis"
+        android:enabled="true"
+        android:icon="@drawable/trendingup24px" />
+
+    <item
+        android:title="계정"
+        android:id="@+id/tabaccount"
+        android:enabled="true"
+        android:icon="@drawable/home24px" />
+</menu>
