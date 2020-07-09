@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -57,11 +56,7 @@ public class MainActivity extends AppCompatActivity {
         load_Login();           // 로그인 여부 check
         load_Save();            // 정보제공 여부 check
 
-        Log.d("ㅅㅂ ㅈ댔다", "로그인 여부 체크");
-
         if(!isLogin) {          // 로그인 안되어 있는 경우 --> Login Activity에서 로그인 한 후 정보제공 여부 check!
-
-            Log.d("ㅅㅂ ㅈ댔다", "로그인 안되어있는 경우");
 
             Intent intent = new Intent(getApplication(), LoginActivity.class);
             startActivity(intent);

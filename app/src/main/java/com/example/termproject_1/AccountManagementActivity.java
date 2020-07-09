@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -61,11 +60,12 @@ public class AccountManagementActivity extends AppCompatActivity implements View
     }
 
     private void signOut() {
-        Log.d("test","signout 실행중");
+        Log.d("test","signOut() 진입");
         FirebaseAuth.getInstance().signOut();
     }
 
     private void revokeAccess() {
+        Log.d("test", "revokeAccess() 진입");
         mAuth.getCurrentUser().delete();
     }
 }

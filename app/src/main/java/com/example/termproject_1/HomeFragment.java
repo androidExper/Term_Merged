@@ -1,6 +1,5 @@
 package com.example.termproject_1;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -53,7 +52,6 @@ public class HomeFragment extends Fragment {
         Date mDate = new Date(now);
         SimpleDateFormat simpleData = new SimpleDateFormat("HH");
         String currTime = simpleData.format(mDate);
-        //Log.d("time","time :"+currTime);
         TextView timetitle = rootView.findViewById(R.id.timeTitle);
         this.SetTimeTitle(currTime, timetitle);
 

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -62,13 +61,13 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
         }
         catch (Exception e){
             e.printStackTrace();
-            Log.d("test", "onPostExecute: error : "+e);
+            Log.d("test", "onPostExecute: error : " + e);
         }
         progressDialog.dismiss();
     }
 
     public FoodListAdapter getFoodListAdapter(){
-        Log.d("test", "getFoodListAdapter: "+foodListAdapter.getItemCount());
+        Log.d("test", "getFoodListAdapter: " + foodListAdapter.getItemCount());
         return this.foodListAdapter;
     }
 
@@ -98,14 +97,12 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
         String st = "1";
         String ed = "999";
 
-        Log.d("test stst", ""+st);
-        Log.d("test eded", ""+ed);
-
-        //http://openapi.foodsafetykorea.go.kr/api/d36886a7c1bd4011bcd6/I2790/xml/24129/25128/
+        Log.d("test", st);
+        Log.d("test", ed);
 
         String queryUrl = "http://openapi.foodsafetykorea.go.kr/api/" + serviceKey + "/I2790/xml/" + st + "/" + ed + "/DESC_KOR=" + DESC_KOR;
         StringBuffer buffer=new StringBuffer();
-        Log.d("test", "xml parsing strat!");
+        Log.d("test", "========== XML parsing start ==========");
         int count = 0;
         try{
             URL url= new URL(queryUrl);                                         // String Type 의 queryUrl 을 URL 객체로 생성함
@@ -116,11 +113,11 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
             String tag;
             xpp.next();
             int eventType= xpp.getEventType();
-            buffer.append("파싱을 시작합니다!\n\n");
+            buffer.append("파싱 시작\n\n");
             while( eventType != XmlPullParser.END_DOCUMENT) {
                 switch( eventType ) {
                     case XmlPullParser.START_DOCUMENT:
-                        buffer.append("파싱 시작...\n\n");
+                        buffer.append("parsing\n\n");
                         break;
                     case XmlPullParser.START_TAG:
                         tag= xpp.getName();                                 //태그 이름 얻어오기
@@ -149,63 +146,27 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
                             info[1] = xpp.getText();
                         }
                         else if (tag.equals("SERVING_SIZE")) {
-                            /*
-                            buffer.append("총내용량 : ");
-                            xpp.next();
-                            buffer.append(xpp.getText());
-                            buffer.append("\n");
-                            info[13] = xpp.getText();
-
-                             */
                             break;
                         }
                         else if (tag.equals("FOOD_GROUP")) {
                             break;
                         }
                         else if (tag.equals("MAKER_NAME")) {
-                            /*
-                            buffer.append("제조사명 : ");
-                            xpp.next();
-                            buffer.append(xpp.getText());
-                            buffer.append("\n");
-                            info[12] = xpp.getText();
-                             */
                             break;
                         }
                         else if (tag.equals("BGN_YEAR")) {
                             break;
                         }
                         else if (tag.equals("NUTR_CONT9")) {
-                            /*
-                            buffer.append("트랜스지방 : ");
-                            xpp.next();
-                            buffer.append(xpp.getText());
-                            buffer.append("\n");
-                            info[9] = xpp.getText();
-                             */
                             break;
                         }
                         else if (tag.equals("NUTR_CONT8")) {
-                            /*
-                            buffer.append("포화지방산 : ");
-                            xpp.next();
-                            buffer.append(xpp.getText());
-                            buffer.append("\n");
-                            info[8] = xpp.getText();
-                             */
                             break;
                         }
                         else if (tag.equals("FOOD_CD")) {
                             break;
                         }
                         else if (tag.equals("NUTR_CONT7")) {
-                            /*
-                            buffer.append("콜레스테롤 : ");
-                            xpp.next();
-                            buffer.append(xpp.getText());
-                            buffer.append("\n");
-                            info[7] = xpp.getText();
-                             */
                             break;
                         }
                         else if (tag.equals("NUTR_CONT6")) {
@@ -216,13 +177,6 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
                             info[6] = xpp.getText();
                         }
                         else if (tag.equals("NUTR_CONT5")) {
-                            /*
-                            buffer.append("당류 : ");
-                            xpp.next();
-                            buffer.append(xpp.getText());
-                            buffer.append("\n");
-                            info[5] = xpp.getText();
-                             */
                             break;
                         }
                         else if (tag.equals("NUTR_CONT4")) {
@@ -243,13 +197,6 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
                             break;
                         }
                         else if (tag.equals("SAMPLING_REGION_NAME")) {
-                            /*
-                            buffer.append("지역명 : ");
-                            xpp.next();
-                            buffer.append(xpp.getText());
-                            buffer.append("\n");
-                            info[14] = xpp.getText();
-                             */
                             break;
                         }
                         else if (tag.equals("SUB_REF_NAME")) {
@@ -257,13 +204,6 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
                         }
 
                         else if (tag.equals("GROUP_NAME")) {
-                            /*
-                            buffer.append("식품군 : ");
-                            xpp.next();
-                            buffer.append(xpp.getText());
-                            buffer.append("\n");
-                            info[11] = xpp.getText();
-                            */
                             break;
                         }
                         else if (tag.equals("SAMPLING_REGION_CD")) {
@@ -299,11 +239,12 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("test", "xml : "+e);
+            Log.d("test", "XML error : " + e);
         }
-        Log.d("test", "getXmlData: count  : "+count);
-        buffer.append("파싱을 종료합니다!\n");
+        Log.d("test", "getXmlData: count  : " + count);
+        buffer.append("파싱 종료\n\n");
 
+        Log.d("test","========== XML parsing stop ==========");
         return buffer.toString();
     }
 
@@ -322,7 +263,7 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
         String queryUrl = "http://openapi.foodsafetykorea.go.kr/api/" + serviceKey + "/I2790/xml/" + st + "/" + ed;
 
         StringBuffer buffer=new StringBuffer();
-        Log.d("test", "xml parsing strat!");
+        Log.d("test", "========== XML parsing start ==========");
         int count = 0;
         try{
             URL url= new URL(queryUrl);                                         // String Type 의 queryUrl 을 URL 객체로 생성함
@@ -520,11 +461,12 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("test", "xml : "+e);
+            Log.d("test", "XML : " + e);
         }
         Log.d("test", "getXmlData: count  : "+count);
         buffer.append("파싱을 종료합니다!\n");
 
+        Log.d("test", "========== XML parsing stop ==========");
         return buffer.toString();
     }
 }

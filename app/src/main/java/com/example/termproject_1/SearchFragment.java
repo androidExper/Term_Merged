@@ -36,20 +36,15 @@ public class SearchFragment extends Fragment  {
         View rootView = inflater.inflate(R.layout.fragment_search,container,false);
         final MainActivity mainActivity = (MainActivity) getActivity();
 
-
         // edit text input
         edit = rootView.findViewById(R.id.searchEdit);
-
 
         // recyclerview 설정
         foodListAdapter = new FoodListAdapter();
         recyclerView = rootView.findViewById(R.id.searchRecyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        //foodListAdapter = new FoodListAdapter();
 
-
-        // Button Listner
         button = rootView.findViewById(R.id.searchButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +55,6 @@ public class SearchFragment extends Fragment  {
                 myAsyncTask.execute(foodname);
             }
         });
-
 
         foodListAdapter.setOnItemClickListener(new FoodListAdapter.OnItemClickListener() {
             @Override
@@ -80,28 +74,7 @@ public class SearchFragment extends Fragment  {
             }
         });
 
-
-
         recyclerView.setAdapter(foodListAdapter);
-
         return rootView;
     }
-
-    /*
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        foodListAdapter = new FoodListAdapter();
-        foodListAdapter.setOnFoodItemClickListener(new FoodListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Log.d("test", "onItemClick: Success");
-            }
-        });
-        recyclerView.setAdapter(foodListAdapter);
-    }
-
-     */
-
-
 }

@@ -6,10 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.ViewHolder> {
@@ -24,7 +22,7 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.ViewHo
     private OnItemClickListener mlistener ;
 
     public void setOnItemClickListener(OnItemClickListener listener){
-        Log.d("test", "setOnItemClickListener: "+listener);
+        Log.d("test", "setOnItemClickListener(): " + listener);
         this.mlistener = listener;
     }
 
@@ -104,21 +102,16 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.ViewHo
     public int getItemCount() {
         return items.size();
     }
-
     // 어댑터가 Food 객체를 list에 넣거나 가져가기 위한 메소드 재정의
     public void addItem(Food item){
         this.items.add(item);
     }
-
     public void setItems(ArrayList<Food> items){
-        //Log.d("TEST", "setItems: "+items.size());
         this.items = items;
     }
-
     public Food getItem(int position){
         return items.get(position);
     }
-
     public void setItem(int position,Food item){
         items.set(position,item);
     }

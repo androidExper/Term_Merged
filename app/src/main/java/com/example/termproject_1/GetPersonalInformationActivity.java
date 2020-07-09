@@ -1,6 +1,5 @@
 package com.example.termproject_1;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,7 +49,7 @@ public class GetPersonalInformationActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_personal_information);
 
-        Log.d("test", "getInfo_oncreate");
+        Log.d("test", "GetPersonalInformationActivity_onCreate()");
 
         btnSave = (Button) findViewById(R.id.btn_save);
         btnSave.setOnClickListener(this);
@@ -67,27 +66,26 @@ public class GetPersonalInformationActivity extends AppCompatActivity implements
     }
 
     public void postFirebaseDatabase(boolean add) {
+        Log.d("test","postFirebaseDatabase 진입");
+
         mPostReference = FirebaseDatabase.getInstance().getReference();
 
         Map<String, Object> childUpdates = new HashMap<>();
         Map<String, Object> postValues = null;
 
-        Log.d("test","----------!!!!!post firebase 들어왔음!!!!!----------");
-
         if (add) {
-            Log.d("test","----------!!!!!post firebase if(add) 진입 했음!!!!!----------");
+            Log.d("test","if(add) 진입");
 
             FirebasePost post = new FirebasePost(name, gender, age, height, weight, goal_weight);
             postValues = post.toMap();
 
-            Log.d("test","----------!!!!!post firebase if(add) 나가기 직전!!!!!----------");
+            Log.d("test","if(add) 탈출 직전");
         }
-
-        Log.d("test","----------!!!!!post firebase if(add) 나온 직후!!!!!----------");
-        Log.d("test","----------!!!!!before child update!!!!!----------");
+        Log.d("test","if(add) 탈출 직후");
+        Log.d("test","childUpdates 직전");
         childUpdates.put("/name_list/" + name, postValues);
         mPostReference.updateChildren(childUpdates);
-        Log.d("test","----------!!!!!after child update!!!!!----------");
+        Log.d("test","childUpdates 직후");
     }
 
     public void getFirebaseDatabase() {
@@ -132,34 +130,20 @@ public class GetPersonalInformationActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
+        Log.d("test","GetPersonalInformationActivity/onClick() 진입");
 
-        Log.d("test","----------!!!!!onclick firebase post!!!!!----------");
-
-        Log.d("test","11111111111111111----------");
         name = edit_name.getText().toString();
-        Log.d("test","222222222222---------");
         weight = edit_weight.getText().toString();
-        Log.d("test","333333333333333---------");
         goal_weight = edit_goal_weight.getText().toString();
-        Log.d("test","4444444444444---------");
         height = edit_height.getText().toString();
-        Log.d("test","55555555555555---------");
         RadioButton checked_gender = (RadioButton) findViewById(check_gender.getCheckedRadioButtonId());
-        Log.d("test","6666666666666---------");
         gender = checked_gender.getText().toString();
-        Log.d("test","7777777777777777---------");
         Calendar cal = Calendar.getInstance();
-        Log.d("test","888888888888888---------");
 
-        Log.d("test","----------!!!!!onclick firebase post 객체들 생성 완료. postfirebase 진입 직전!!!!!----------");
+        Log.d("test","GetPersonalInformationActivity/onClick() 객체 생성 완료.");
+        Log.d("test","postFirebaseDatabase() 진입 직전");
         postFirebaseDatabase(true);
-        //getFirebaseDatabase();
-        Log.d("test","----------!!!!!onclick firebase post 객체들 생성 완료. postfirebase 나온 직후!!!!!----------");
-
-
-
-        //Intent intent = new Intent(getApplication(), MainActivity.class);
-        //startActivity(intent);
+        Log.d("test","postFirebaseDatabase() 탈출 직후");
 
         finish();
     }

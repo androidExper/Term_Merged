@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.fragment.app.Fragment;
-
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AccountFragment extends Fragment {

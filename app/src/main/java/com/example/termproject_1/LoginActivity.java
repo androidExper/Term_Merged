@@ -51,12 +51,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 //finish();
             } else {            // 가입은 했지만, 정보 x
+                Log.d("test", "가입은 했지만, 정보 x 인 경우; GetPersonalInformationActivity로 intent 전환 직전");
                 Intent intent = new Intent(getApplication(), GetPersonalInformationActivity.class);
-                Log.d("testsetst", "가입은 했지만, 정보 x 인 경우 수행!!!");
                 startActivity(intent);
                 save_Save();
-
-                Log.d("testsetst", "가입은 했지만, 정보 x 인 경우 정보 제공하고 난 직후");
+                Log.d("test", "가입은 했지만, 정보 x 인 경우; 정보 제공하고 난 직후");
 
                 finish();
             }

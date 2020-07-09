@@ -23,17 +23,14 @@ public class MyAdapter extends BaseAdapter {
     public int getCount() {
         return listData.size();
     }
-
     @Override
     public long getItemId(int position) {
         return position;
     }
-
     @Override
     public Object getItem(int position) {
         return listData.get(position);
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = myLayoutInflater.inflate(R.layout.listview_home,null);

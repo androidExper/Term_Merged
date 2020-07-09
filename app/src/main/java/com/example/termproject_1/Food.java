@@ -14,23 +14,18 @@ public class Food {
     public String getFoodname() {
         return foodname;
     }
-
     public void setFoodname(String foodname) {
         this.foodname = foodname;
     }
-
     public String[] getNutr() {
         return nutr;
     }
-
     public void setNutr(String[] nutr) {
         this.nutr = nutr;
     }
-
     public String getKcal() {
         return kcal;
     }
-
     public void setKcal(String kcal) {
         this.kcal = kcal;
     }

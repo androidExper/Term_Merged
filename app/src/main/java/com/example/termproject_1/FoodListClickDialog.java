@@ -1,39 +1,25 @@
 package com.example.termproject_1;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
-
 import java.util.ArrayList;
-
 
 public class FoodListClickDialog extends DialogFragment {
     private  Fragment fragment;
@@ -57,8 +43,6 @@ public class FoodListClickDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle saveInstanceState){
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_food_list_click_dialog, new LinearLayout(getActivity()), false);
         Button regButton = view.findViewById(R.id.registBtn);
-
-        Log.d("testtest", "_--================-------------==============-------------======");
 
         // 그래프 설정
         RadarChart radarChart=(RadarChart)view.findViewById(R.id.chart3);

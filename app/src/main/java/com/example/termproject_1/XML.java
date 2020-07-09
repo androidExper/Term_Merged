@@ -2,7 +2,6 @@ package com.example.termproject_1;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -11,7 +10,6 @@ import java.net.URLEncoder;
 public class XML {
     String foodname;
     String[] info;
-
 
     public XML(String _foodname) {
         foodname = _foodname;
