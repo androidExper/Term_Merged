@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         ArrayList<Integer> Test = new ArrayList<Integer>(10);
         this.foodDataBaseManager =  FoodDataBaseManager.getInstance(this);
 

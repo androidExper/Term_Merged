@@ -42,7 +42,15 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
 
     @Override
     protected String doInBackground(String ... strings) {
-        return this.XML_SearchTab(strings);
+        String[] arranged = strings[0].split("/");
+        // [0] : foodname
+        // [1] : 부족한 영양소 index
+        // [2] : 부족량
+
+        if(arranged[0].equals(" "))                     // 추천식단 요청
+            return this.XML_Recommendation(arranged);
+        else                                            // 음식 이름 검색
+            return this.XML_SearchTab(arranged);
     }
 
     @Override
@@ -65,7 +73,7 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
     }
 
     private String XML_SearchTab(String[] strings){
-        String str= strings[0];      // EditText 에서  작성한 식품명 text
+        String str= strings[0];                     // EditText 에서  작성한 식품명 text
         String DESC_KOR = URLEncoder.encode(str);   // 식품명 str 을 encoding
         String serviceKey="d36886a7c1bd4011bcd6";   // serviceKey
         String[] info = new String[15];
@@ -87,7 +95,15 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
         // info[13]     SERVING_SIZE
         // info[14]     SAMPLING_REGION_NAME
 
-        String queryUrl = "http://openapi.foodsafetykorea.go.kr/api/" + serviceKey + "/I2790/xml/1/999/DESC_KOR=" + DESC_KOR;
+        String st = "1";
+        String ed = "999";
+
+        Log.d("test stst", ""+st);
+        Log.d("test eded", ""+ed);
+
+        //http://openapi.foodsafetykorea.go.kr/api/d36886a7c1bd4011bcd6/I2790/xml/24129/25128/
+
+        String queryUrl = "http://openapi.foodsafetykorea.go.kr/api/" + serviceKey + "/I2790/xml/" + st + "/" + ed + "/DESC_KOR=" + DESC_KOR;
         StringBuffer buffer=new StringBuffer();
         Log.d("test", "xml parsing strat!");
         int count = 0;
@@ -248,6 +264,226 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
                             buffer.append("\n");
                             info[11] = xpp.getText();
                             */
+                            break;
+                        }
+                        else if (tag.equals("SAMPLING_REGION_CD")) {
+                            break;
+                        }
+                        else if (tag.equals("RESEARCH_YEAR")) {
+                            break;
+                        }
+                        else if (tag.equals("SAMPLING_MONTH_CD")) {
+                            break;
+                        }
+                        else if (tag.equals("NUM")) {
+                            break;
+                        }
+                        else if (tag.equals("ANIMAL_PLANT")) {
+                            break;
+                        }
+                        break;
+                    case XmlPullParser.TEXT:
+                        break;
+                    case XmlPullParser.END_TAG:
+                        tag= xpp.getName(); // 태그 이름 얻어오기
+                        if(tag.contains("row")) {
+                            if(count >=1){
+                                foodList.add(new Food(info[10],new String[]{info[2],info[6],info[3],info[4]},info[1]));
+                                Log.d("test", "getXmlData: "+info[10]+" "+info[2]+" "+info[3]+" "+info[4]+" "+info[1]);
+                            }
+                            buffer.append("\n");
+                        };        // 첫번째 검색결과종료..줄바꿈
+                        break;
+                }
+                eventType= xpp.next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("test", "xml : "+e);
+        }
+        Log.d("test", "getXmlData: count  : "+count);
+        buffer.append("파싱을 종료합니다!\n");
+
+        return buffer.toString();
+    }
+
+    private String XML_Recommendation(String[] strings){
+
+        String index = strings[1];          // 부족한 영양소 종류
+        String deficiency = strings[2];     // 부족량
+
+        ArrayList<Food> food_info = new ArrayList<Food>();
+        String[] info = new String[15];
+        info[0] = "1";
+
+        String st = "1";
+        String ed = "999";
+        String serviceKey="d36886a7c1bd4011bcd6";   // serviceKey
+        String queryUrl = "http://openapi.foodsafetykorea.go.kr/api/" + serviceKey + "/I2790/xml/" + st + "/" + ed;
+
+        StringBuffer buffer=new StringBuffer();
+        Log.d("test", "xml parsing strat!");
+        int count = 0;
+        try{
+            URL url= new URL(queryUrl);                                         // String Type 의 queryUrl 을 URL 객체로 생성함
+            InputStream is= url.openStream();                                   // url 위치로 입력스트림 연결
+            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();
+            XmlPullParser xpp= factory.newPullParser();
+            xpp.setInput( new InputStreamReader(is, "UTF-8") );     // InputStream 으로부터 xml 입력 받음
+            String tag;
+            xpp.next();
+            int eventType= xpp.getEventType();
+            buffer.append("파싱을 시작합니다!\n\n");
+            while( eventType != XmlPullParser.END_DOCUMENT) {
+                switch( eventType ) {
+                    case XmlPullParser.START_DOCUMENT:
+                        buffer.append("파싱 시작...\n\n");
+                        break;
+                    case XmlPullParser.START_TAG:
+                        tag= xpp.getName();                                 //태그 이름 얻어오기
+                        if(tag.contains("row")) {
+                            ++count;
+                        }                                                   // 첫번째 검색결과
+                        else if (tag.equals("NUTR_CONT3")) {
+                            buffer.append("단백질 : ");
+                            xpp.next();
+                            buffer.append(xpp.getText());
+                            buffer.append("\n");
+
+                            float temp;
+                            if(xpp.getText() == null || xpp.getText().isEmpty())
+                                temp = 0;
+                            else
+                                temp = Float.parseFloat(xpp.getText());
+
+                            if(strings[1].equals("3")) {
+                                if(temp < Float.parseFloat(deficiency))
+                                    break;
+                            }
+
+                            info[3] = xpp.getText();
+                        }
+                        else if (tag.equals("NUTR_CONT2")) {
+                            buffer.append("탄수화물 : ");
+                            xpp.next();
+                            buffer.append(xpp.getText());
+                            buffer.append("\n");
+
+                            float temp;
+                            if(xpp.getText() == null || xpp.getText().isEmpty())
+                                temp = 0;
+                            else
+                                temp = Float.parseFloat(xpp.getText());
+
+                            if(strings[1].equals("2")) {
+                                if(temp < Float.parseFloat(deficiency))
+                                    break;
+                            }
+
+                            info[2] = xpp.getText();
+                        }
+                        else if (tag.equals("NUTR_CONT1")) {
+                            buffer.append("열량 : ");
+                            xpp.next();
+                            buffer.append(xpp.getText());
+                            buffer.append("\n");
+
+                            float temp;
+                            if(xpp.getText() == null || xpp.getText().isEmpty())
+                                temp = 0;
+                            else
+                                temp = Float.parseFloat(xpp.getText());
+
+                            if(strings[1].equals("1")) {
+                                if(temp < Float.parseFloat(deficiency))
+                                    break;
+                            }
+
+                            info[1] = xpp.getText();
+                        }
+                        else if (tag.equals("SERVING_SIZE")) {
+                            break;
+                        }
+                        else if (tag.equals("FOOD_GROUP")) {
+                            break;
+                        }
+                        else if (tag.equals("MAKER_NAME")) {
+                            break;
+                        }
+                        else if (tag.equals("BGN_YEAR")) {
+                            break;
+                        }
+                        else if (tag.equals("NUTR_CONT9")) {
+                            break;
+                        }
+                        else if (tag.equals("NUTR_CONT8")) {
+                            break;
+                        }
+                        else if (tag.equals("FOOD_CD")) {
+                            break;
+                        }
+                        else if (tag.equals("NUTR_CONT7")) {
+                            break;
+                        }
+                        else if (tag.equals("NUTR_CONT6")) {
+                            buffer.append("나트륨 : ");
+                            xpp.next();
+                            buffer.append(xpp.getText());
+                            buffer.append("\n");
+
+                            float temp;
+                            if(xpp.getText() == null || xpp.getText().isEmpty())
+                                temp = 0;
+                            else
+                                temp = Float.parseFloat(xpp.getText());
+
+                            if(strings[1].equals("6")) {
+                                if(temp < Float.parseFloat(deficiency))
+                                    break;
+                            }
+
+                            info[6] = xpp.getText();
+                        }
+                        else if (tag.equals("NUTR_CONT5")) {
+                            break;
+                        }
+                        else if (tag.equals("NUTR_CONT4")) {
+                            buffer.append("지방 : ");
+                            xpp.next();
+                            buffer.append(xpp.getText());
+                            buffer.append("\n");
+
+                            float temp;
+                            if(xpp.getText() == null || xpp.getText().isEmpty())
+                                temp = 0;
+                            else
+                                temp = Float.parseFloat(xpp.getText());
+
+                            if(strings[1].equals("4")) {
+                                if(temp < Float.parseFloat(deficiency))
+                                    break;
+                            }
+
+                            info[4] = xpp.getText();
+                        }
+                        else if (tag.equals("DESC_KOR")) {
+                            buffer.append("식품이름 : ");
+                            xpp.next();
+                            buffer.append(xpp.getText());
+                            buffer.append("\n");
+                            info[10] = xpp.getText();
+                        }
+                        else if (tag.equals("SAMPLING_MONTH_NAME")) {
+                            break;
+                        }
+                        else if (tag.equals("SAMPLING_REGION_NAME")) {
+                            break;
+                        }
+                        else if (tag.equals("SUB_REF_NAME")) {
+                            break;
+                        }
+
+                        else if (tag.equals("GROUP_NAME")) {
                             break;
                         }
                         else if (tag.equals("SAMPLING_REGION_CD")) {

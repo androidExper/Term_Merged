@@ -27,8 +27,8 @@
         </activity>
         <activity android:name=".GetPersonalInformationActivity"/>
         <activity android:name=".AccountManagementActivity"/>
-        <activity android:name="ExampleXML"/>
-        <activity android:name="ListItemInfo" />
+        <activity android:name=".ExampleXML"/>
+        <activity android:name=".ListItemInfo" />
         <activity android:name=".MainActivity"/>
     </application>
 

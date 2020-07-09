@@ -66,6 +66,17 @@ public class SearchFragment extends Fragment  {
             @Override
             public void onItemClick(int position) {
                 Log.d("test", "onItemClick: Success");
+
+                FoodListClickDialog dialogFragment = new FoodListClickDialog(foodList.get(position).getFoodname(),
+                        foodList.get(position).getKcal(),foodList.get(position).getNutr());
+                dialogFragment.show(getFragmentManager(),"simiple");
+
+                Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getFoodname());
+                Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getKcal());
+                Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getNutr()[0]);
+                Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getNutr()[1]);
+                Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getNutr()[2]);
+                Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getNutr()[3]);
             }
         });
 

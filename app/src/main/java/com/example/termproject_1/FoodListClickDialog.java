@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,8 @@ public class FoodListClickDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle saveInstanceState){
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_food_list_click_dialog, new LinearLayout(getActivity()), false);
         Button regButton = view.findViewById(R.id.registBtn);
+
+        Log.d("testtest", "_--================-------------==============-------------======");
 
         // 그래프 설정
         RadarChart radarChart=(RadarChart)view.findViewById(R.id.chart3);
