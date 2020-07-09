@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 정보 제공 여부 check9
     private boolean isLogin;
-    //private SharedPreferences appData;
+    private SharedPreferences appData;
 
     /*
 
@@ -50,15 +50,15 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Integer> Test = new ArrayList<Integer>(10);
         this.foodDataBaseManager =  FoodDataBaseManager.getInstance(this);
 
-        //appData = getSharedPreferences("appData", MODE_PRIVATE);
-        /*
+        appData = getSharedPreferences("appData", MODE_PRIVATE);
+
         load_Login();         // 로그인 여부 check
         if(!isLogin) {
             Intent intent = new Intent(getApplication(), LoginActivity.class);
             startActivity(intent);
             save_Login();
         }
-        */
+
         // 하단 탭 Fragment
         homeFragment = new HomeFragment();
         searchFragment = new SearchFragment();
@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
         return this.foodDataBaseManager;
     }
 
-    /*
     public void save_Login() {
         SharedPreferences.Editor editor = appData.edit();
 
@@ -117,6 +116,4 @@ public class MainActivity extends AppCompatActivity {
     public void load_Login() {
         isLogin = appData.getBoolean("IS_LOGIN", false);
     }
-
-     */
 }
