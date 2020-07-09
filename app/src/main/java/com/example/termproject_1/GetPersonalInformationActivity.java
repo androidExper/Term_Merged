@@ -156,7 +156,11 @@ public class GetPersonalInformationActivity extends AppCompatActivity implements
         //getFirebaseDatabase();
         Log.d("test","----------!!!!!onclick firebase post 객체들 생성 완료. postfirebase 나온 직후!!!!!----------");
 
-        Intent intent = new Intent(getApplication(), MainActivity.class);
-        startActivity(intent);
+
+
+        //Intent intent = new Intent(getApplication(), MainActivity.class);
+        //startActivity(intent);
+
+        finish();
     }
 }

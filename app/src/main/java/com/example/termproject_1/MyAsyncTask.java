@@ -317,7 +317,7 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
         info[0] = "1";
 
         String st = "1";
-        String ed = "999";
+        String ed = "30";
         String serviceKey="d36886a7c1bd4011bcd6";   // serviceKey
         String queryUrl = "http://openapi.foodsafetykorea.go.kr/api/" + serviceKey + "/I2790/xml/" + st + "/" + ed;
 
@@ -511,6 +511,7 @@ public class MyAsyncTask extends AsyncTask<String,Void,String>{
                                 foodList.add(new Food(info[10],new String[]{info[2],info[6],info[3],info[4]},info[1]));
                                 Log.d("test", "getXmlData: "+info[10]+" "+info[2]+" "+info[3]+" "+info[4]+" "+info[1]);
                             }
+
                             buffer.append("\n");
                         };        // 첫번째 검색결과종료..줄바꿈
                         break;

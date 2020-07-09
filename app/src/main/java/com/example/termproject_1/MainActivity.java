@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 정보 제공 여부 check9
     private boolean isLogin;
+    private boolean isSave;
     private SharedPreferences appData;
 
     /*
@@ -52,11 +54,24 @@ public class MainActivity extends AppCompatActivity {
 
         appData = getSharedPreferences("appData", MODE_PRIVATE);
 
-        load_Login();         // 로그인 여부 check
-        if(!isLogin) {
+        load_Login();           // 로그인 여부 check
+        load_Save();            // 정보제공 여부 check
+
+        Log.d("ㅅㅂ ㅈ댔다", "로그인 여부 체크");
+
+        if(!isLogin) {          // 로그인 안되어 있는 경우 --> Login Activity에서 로그인 한 후 정보제공 여부 check!
+
+            Log.d("ㅅㅂ ㅈ댔다", "로그인 안되어있는 경우");
+
             Intent intent = new Intent(getApplication(), LoginActivity.class);
             startActivity(intent);
             save_Login();
+        } else {                // 로그인 되어 있는 경우 --> 여기서 바로 save check 후 getinformationactivity로 넘기기
+            if(!isSave) {
+                Intent intent = new Intent(getApplication(), GetPersonalInformationActivity.class);
+                startActivity(intent);
+                save_Save();
+            }
         }
 
         // 하단 탭 Fragment
@@ -115,5 +130,14 @@ public class MainActivity extends AppCompatActivity {
     }
     public void load_Login() {
         isLogin = appData.getBoolean("IS_LOGIN", false);
+    }
+    public void save_Save() {
+        SharedPreferences.Editor editor = appData.edit();
+
+        editor.putBoolean("IS_SAVE", true);
+        editor.commit();
+    }
+    public void load_Save() {
+        isSave = appData.getBoolean("IS_SAVE", false);
     }
 }

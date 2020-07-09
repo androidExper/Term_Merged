@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private SignInButton signInButton;
 
     private boolean isSave;
+    private boolean isLogin;
     private SharedPreferences appData;
 
     @Override
@@ -39,12 +41,23 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         appData = getSharedPreferences("appData", MODE_PRIVATE);
-        load_isSave();
+        load_Save();
         if (mAuth.getCurrentUser() != null) { // 기존 가입자인 경우
-            if(isSave) { // 3. 기존 가입자이고, personal information 제공한 경우 (정보제공 했음)
-                Intent intent = new Intent(getApplication(), GetPersonalInformationActivity.class);
+            if(isSave) {        // 가입도 했고, 정보 o
+
+                Log.d("testsetst", "가입도 했고 정보도 제공한 경우 수행!!!");
+
+                Intent intent = new Intent(getApplication(), MainActivity.class);
                 startActivity(intent);
-                save_isSave();
+                //finish();
+            } else {            // 가입은 했지만, 정보 x
+                Intent intent = new Intent(getApplication(), GetPersonalInformationActivity.class);
+                Log.d("testsetst", "가입은 했지만, 정보 x 인 경우 수행!!!");
+                startActivity(intent);
+                save_Save();
+
+                Log.d("testsetst", "가입은 했지만, 정보 x 인 경우 정보 제공하고 난 직후");
+
                 finish();
             }
         }
@@ -81,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                 // 최초 가입자이므로 getPersonalInformationActivity 로 전환
                 Intent intent = new Intent(getApplication(), GetPersonalInformationActivity.class);
                 startActivity(intent);
-                save_isSave();
             }
             catch (ApiException e) {}
         }
@@ -97,9 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Snackbar.make(findViewById(R.id.layout_main), "Authentication Successed.", Snackbar.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
-                            save_isSave();
-                            finish();
+                            updateUI(user);
                         } else {
                             Snackbar.make(findViewById(R.id.layout_main), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             updateUI(null);
@@ -111,18 +121,31 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) { //update ui code here
         if(user != null) {
             Intent intent = new Intent(getApplication(), MainActivity.class);
+
+            save_Save();
+            save_Login();
+
             startActivity(intent);
             finish();
         }
     }
 
-    public void save_isSave() {
+    public void save_Login() {
+        SharedPreferences.Editor editor = appData.edit();
+
+        editor.putBoolean("IS_LOGIN", true);
+        editor.commit();
+    }
+    public void load_Login() {
+        isLogin = appData.getBoolean("IS_LOGIN", false);
+    }
+    public void save_Save() {
         SharedPreferences.Editor editor = appData.edit();
 
         editor.putBoolean("IS_SAVE", true);
         editor.commit();
     }
-    public void load_isSave() {
+    public void load_Save() {
         isSave = appData.getBoolean("IS_SAVE", false);
     }
 }
