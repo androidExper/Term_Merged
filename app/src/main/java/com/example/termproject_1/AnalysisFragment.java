@@ -1,25 +1,40 @@
 package com.example.termproject_1;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 
+import androidx.fragment.app.Fragment;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 public class AnalysisFragment extends Fragment {
 
-    String m1="2000";
-    String m2="2200";
-    String m3="1500";
-    String m4="500";
-    String m5="600";
+    String m1="2300";
+    String m2="2000";
+    String m3="300";
+    String m4="60";
+    String m5="40";
 
-    String w1="14000";
-    String w2="15400";
-    String w3="10500";
-    String w4="3500";
-    String w5="4200";
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,12 +67,12 @@ public class AnalysisFragment extends Fragment {
         max.add(new BarEntry(Float.parseFloat(m3), 2));
         max.add(new BarEntry(Float.parseFloat(m4), 3));
         max.add(new BarEntry(Float.parseFloat(m5), 4));
-        max1.add(new BarEntry(Float.parseFloat(w1), 0));
-        max1.add(new BarEntry(Float.parseFloat(w2), 1));
-        max1.add(new BarEntry(Float.parseFloat(w3), 2));
-        max1.add(new BarEntry(Float.parseFloat(w4), 3));
-        max1.add(new BarEntry(Float.parseFloat(w5), 4));
 
+        max1.add(new BarEntry(7*Float.parseFloat(m1), 0));
+        max1.add(new BarEntry(7*Float.parseFloat(m2), 1));
+        max1.add(new BarEntry(7*Float.parseFloat(m3), 2));
+        max1.add(new BarEntry(7*Float.parseFloat(m4), 3));
+        max1.add(new BarEntry(7*Float.parseFloat(m5), 4));
         RadarDataSet Max= new RadarDataSet(max, "권장량");
         LineDataSet Max1=new LineDataSet(max, "권장량");
         ArrayList<String> labels=new ArrayList<String>();
@@ -76,7 +91,6 @@ public class AnalysisFragment extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         XAxis xAxis1=lineChart1.getXAxis();
         xAxis1.setPosition(XAxis.XAxisPosition.BOTTOM);
-
 
 
         long now=System.currentTimeMillis();
@@ -118,8 +132,8 @@ public class AnalysisFragment extends Fragment {
             while(cursor.moveToNext()){
                 if(cursor.getString(2).compareTo(cDate)==0){
                     k=k+Float.parseFloat(cursor.getString(4));
-                    n1=n1+Float.parseFloat(cursor.getString(5));
-                    n2=n2+Float.parseFloat(cursor.getString(6));
+                    n1=n1+Float.parseFloat(cursor.getString(6));
+                    n2=n2+Float.parseFloat(cursor.getString(5));
                     n3=n3+Float.parseFloat(cursor.getString(7));
                     n4=n4+Float.parseFloat(cursor.getString(8));
                 }
@@ -154,10 +168,10 @@ public class AnalysisFragment extends Fragment {
             while(cursor_m.moveToNext()){
                 if((Float.parseFloat(cDate)-Float.parseFloat(cursor_m.getString(2)))<=7){
                     k1=k1+Float.parseFloat(cursor_m.getString(4));
-                    m1=n1+Float.parseFloat(cursor_m.getString(5));
-                    m2=n2+Float.parseFloat(cursor_m.getString(6));
-                    m3=n3+Float.parseFloat(cursor_m.getString(7));
-                    m4=n4+Float.parseFloat(cursor_m.getString(8));
+                    m1=m1+Float.parseFloat(cursor_m.getString(5));
+                    m2=m2+Float.parseFloat(cursor_m.getString(6));
+                    m3=m3+Float.parseFloat(cursor_m.getString(7));
+                    m4=m4+Float.parseFloat(cursor_m.getString(8));
                 }
             }
         }
@@ -168,8 +182,11 @@ public class AnalysisFragment extends Fragment {
         mon.add(new BarEntry(l4,4));
 
         LineDataSet dataSet1=new LineDataSet(days, "총량");
+        LineDataSet MaxSet1=new LineDataSet(max1, "권장량");
         LineData chartdata=new LineData(labels, dataSet1);
-        chartdata.addDataSet(Max1);
+        MaxSet1.setColor(Color.RED);
+        chartdata.addDataSet(MaxSet1);
+
         lineChart.setData(chartdata);
 
         LineDataSet dataSet2=new LineDataSet(mon, "총량");
@@ -178,7 +195,9 @@ public class AnalysisFragment extends Fragment {
 
         RadarDataSet radarDataSet=new RadarDataSet(days,"총량");
         RadarData radarData=new RadarData(labels, radarDataSet);
-        radarData.addDataSet(Max);
+        RadarDataSet MaxSet=new RadarDataSet(max,"권장량");
+        radarData.addDataSet(MaxSet);
+        MaxSet.setColor(Color.RED);
         radarChart.setData(radarData);
         return v;
     }

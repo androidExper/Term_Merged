@@ -11,6 +11,7 @@
 
     <com.github.mikephil.charting.charts.RadarChart
         android:id="@+id/chart3"
+        android:background="@drawable/round_border"
         android:layout_margin="15dp"
         android:layout_width="300dp"
         android:layout_height="300dp"
@@ -20,8 +21,10 @@
 
     <Button
         android:id="@+id/registBtn"
+        android:background="@drawable/color_change"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
         android:text="등록하기" />
 
 

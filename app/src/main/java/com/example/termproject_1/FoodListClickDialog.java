@@ -1,8 +1,34 @@
 package com.example.termproject_1;
 
 
+import android.app.Dialog;
+import android.content.ContentValues;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 public class FoodListClickDialog extends DialogFragment {
-    private  Fragment fragment;
+    private Fragment fragment;
 
     String foodname="";
     String kcal="0";
@@ -116,6 +142,7 @@ public class FoodListClickDialog extends DialogFragment {
                 FM.insert(addRowValue);
                 String[] colums = new String[] {"_id","foodname","date","meal","kcal",
                         "nutr1","nutr2","nutr3","nutr4",};
+                dismiss();
             }
         });
 
