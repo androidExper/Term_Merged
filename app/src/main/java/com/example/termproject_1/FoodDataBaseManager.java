@@ -1,7 +1,10 @@
 package com.example.termproject_1;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class FoodDataBaseManager {
     static final String DB_FOOD = "Food.db";
@@ -32,14 +35,46 @@ public class FoodDataBaseManager {
                 "foodname TEXT," +
                 "date TEXT," +
                 "meal TEXT," +
-                "kcal TEXT," +
-                "nutr1 TEXT," +
-                "nutr2 TEXT," +
-                "nutr3 TEXT," +
-                "nutr4 TEXT);");
+                "kcal FLOAT," +
+                "nutr1 FLOAT," +
+                "nutr2 FLOAT," +
+                "nutr3 FLOAT," +
+                "nutr4 FLOAT);");
+    }
+
+    public long insert(ContentValues addRowValues){
+        Log.d("test", "insert: success");
+        return db.insert(TABLE_FOOD, null, addRowValues);
+    }
+
+    public Cursor select(String columname, String margin){
+        //return db.rawQuery("SELECT * FROM "+TABLE_FOOD +" WHERE "+"kcal"+" > 2000",null);
+        return db.rawQuery("SELECT * FROM "+TABLE_FOOD,null);
+    }
+
+    public void deleteAll(){
+        db.execSQL("DELETE from "+TABLE_FOOD);
     }
 
     public  boolean checkConnection(){
         return true;
     }
 }
+
+    /*
+    public Cursor query(String[] colums,
+                        String selection,
+                        String[] selectionArgs,
+                        String groupBy,
+                        String having,
+                        String orderby)
+    {
+        return db.query(TABLE_FOOD,
+                colums,
+                selection,
+                selectionArgs,
+                groupBy,
+                having,
+                orderby);
+    }
+     */

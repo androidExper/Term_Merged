@@ -1,32 +1,12 @@
 package com.example.termproject_1;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import java.util.ArrayList;
 
 public class FoodListClickDialog extends DialogFragment {
     private  Fragment fragment;
 
-    String foodname;
-    String kcal;
-    String[] nutr;
+    String foodname="";
+    String kcal="0";
+    String[] nutr=new String[4];
 
     String m1="2000";
     String m2="2200";
@@ -35,14 +15,33 @@ public class FoodListClickDialog extends DialogFragment {
     String m5="600";
 
     public FoodListClickDialog(String foodname,String kcal,String[] nutr){
-        this.foodname = foodname;
-        this.kcal = kcal;
-        this.nutr = nutr;
+        if(foodname != null)
+            this.foodname = foodname;
+        else
+            this.foodname = "Nothing";
+        if(kcal != null)
+            this.kcal = kcal;
+        else
+            this.kcal = "0";
+        if(nutr != null) {
+            for (int i = 0; i < 4; ++i) {
+                if (nutr[i] != null) {
+                    this.nutr[i] = nutr[i];
+                } else {
+                    this.nutr[i] = "0";
+                }
+            }
+        }
+        else
+            this.nutr = new String[4];
     }
+
 
     public Dialog onCreateDialog(Bundle saveInstanceState){
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_food_list_click_dialog, new LinearLayout(getActivity()), false);
         Button regButton = view.findViewById(R.id.registBtn);
+        final FoodDataBaseManager FM = ((MainActivity)getActivity()).getFoodDBManager();
+        final ContentValues addRowValue = new ContentValues();
 
         // 그래프 설정
         RadarChart radarChart=(RadarChart)view.findViewById(R.id.chart3);
@@ -86,14 +85,37 @@ public class FoodListClickDialog extends DialogFragment {
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FoodDataBaseManager FM = ((MainActivity)getActivity()).getFoodDBManager();
-                if(FM.checkConnection()){
+                long now = System.currentTimeMillis();
+                Date mDate = new Date(now);
+                SimpleDateFormat simpleMonth = new SimpleDateFormat("MM");
+                SimpleDateFormat simpleDate = new SimpleDateFormat("dd");
+                SimpleDateFormat simpleTime = new SimpleDateFormat("HH");
 
+                String cTime = simpleDate.format(mDate);
+                String dTime = simpleDate.format(mDate);
+
+                Integer currTime=Integer.parseInt(cTime);
+                String meal = "null";
+                if (4 <= (Integer) currTime && (Integer)currTime <= 10) {
+                    meal = "아침";
+                } else if (10 < currTime && currTime <= 17) {
+                    meal = "점심";
+                } else if (17 < currTime && currTime <= 23) {
+                    meal = "저녁";
                 }
-                else{
-                    Toast.makeText(getContext(),"fail",Toast.LENGTH_SHORT).show();
-                    dismiss();
-                }
+
+                addRowValue.put("foodname",foodname);
+                addRowValue.put("date",dTime);
+                addRowValue.put("meal",meal);
+                addRowValue.put("kcal",kcal);
+                addRowValue.put("nutr1",nutr[0]);
+                addRowValue.put("nutr2",nutr[1]);
+                addRowValue.put("nutr3",nutr[2]);
+                addRowValue.put("nutr4",nutr[3]);
+
+                FM.insert(addRowValue);
+                String[] colums = new String[] {"_id","foodname","date","meal","kcal",
+                        "nutr1","nutr2","nutr3","nutr4",};
             }
         });
 
@@ -111,3 +133,4 @@ public class FoodListClickDialog extends DialogFragment {
         super.onResume();
     }
 }
+
