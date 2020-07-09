@@ -1,7 +1,12 @@
 package com.example.termproject_1;
 
+<<<<<<< Updated upstream
 import android.app.Dialog;
+=======
+import android.content.ContentValues;
+>>>>>>> Stashed changes
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -40,6 +45,9 @@ public class HomeFragment extends Fragment {
         final Context context = container.getContext();
         //MainActivity mainActivity = (MainActivity) getActivity();
 
+        final FoodDataBaseManager FM = ((MainActivity)getActivity()).getFoodDBManager();
+        final ContentValues addRowValue = new ContentValues();
+
         // recyclerview 설정
         recyclerView = rootView.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -57,23 +65,53 @@ public class HomeFragment extends Fragment {
         TextView timetitle = rootView.findViewById(R.id.timeTitle);
         this.SetTimeTitle(currTime, timetitle);
 
+        /*
         MyAsyncTask myAsyncTask = new MyAsyncTask(getActivity(),recyclerView, foodListAdapter, foodList);
-        myAsyncTask.execute(" "+ "/3/30");
+        myAsyncTask.execute("닭갈비");
         myAsyncTask.getFoodListAdapter().setOnItemClickListener(new FoodListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Log.d("test", "onItemClick: Success");
-                Toast.makeText(context,"Success! Position : "+position,Toast.LENGTH_SHORT).show();
                 OnClickItem(position);
             }
         });
+        */
+        final ArrayList<Food> recommendList = new ArrayList<>();
+
+        Cursor cursor = FM.select("meal", "2000.0");
+
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                Food foodData = new Food();
+
+                foodData.setFoodname(cursor.getString(1));
+                foodData.setKcal(cursor.getString(4));
+                foodData.setNutr(new String[]{"10","11","12","13"});
+                recommendList.add(foodData);
+                Log.d("db", "in DB "+foodData.foodname);
+            }
+        }
+
+
+        foodListAdapter.setItems(recommendList);
+        foodListAdapter.setOnItemClickListener(new FoodListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Log.d("test", "onItemClick in Home using DB: Success");
+                OnClickItem(position,recommendList);
+            }
+        });
+        recyclerView.setAdapter(foodListAdapter);
 
         return rootView;
     }
 
-    public void OnClickItem(int position){
+
+    public void OnClickItem(int position,ArrayList<Food> foodList){
+
         FoodListClickDialog dialogFragment = new FoodListClickDialog(foodList.get(position).getFoodname(),
                 foodList.get(position).getKcal(),foodList.get(position).getNutr());
+
         dialogFragment.show(getFragmentManager(),"simiple");
 
         Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getFoodname());
@@ -82,7 +120,6 @@ public class HomeFragment extends Fragment {
         Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getNutr()[1]);
         Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getNutr()[2]);
         Log.d("test", "OnClickItem: data_0: "+foodList.get(position).getNutr()[3]);
-
     }
 
     // 시간대별 텍스트 뷰 설정

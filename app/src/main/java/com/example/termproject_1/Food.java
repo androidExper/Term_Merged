@@ -5,6 +5,12 @@ public class Food {
     String[] nutr;
     String kcal;
 
+    public Food(){
+        foodname = null;
+        nutr = null;
+        kcal = null;
+    }
+
     public Food(String foodname, String[] nutr, String kcal) {
         this.foodname = foodname;
         this.nutr = nutr;
